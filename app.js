@@ -515,11 +515,11 @@ class AppController {
   updateEngineIndicator(statusInfo) {
     if (!this.dom.engineStatusBadge) return;
     if (statusInfo.isReady) {
-      this.dom.engineStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Engine: WASM CPython 3.12`;
-      this.dom.engineStatusBadge.className = 'hidden xl:flex text-xs px-2.5 py-1 rounded-md bg-slate-900 text-slate-300 border border-slate-700/80 items-center gap-1.5 font-mono';
+      this.dom.engineStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Engine: WASM CPython 3.12`;
+      this.dom.engineStatusBadge.className = 'hidden xl:flex text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200 items-center gap-1.5 font-mono';
     } else {
-      this.dom.engineStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-sky-400"></span> Engine: Local VM`;
-      this.dom.engineStatusBadge.className = 'hidden xl:flex text-xs px-2.5 py-1 rounded-md bg-slate-900 text-slate-300 border border-slate-700/80 items-center gap-1.5 font-mono';
+      this.dom.engineStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-sky-600"></span> Engine: Local VM`;
+      this.dom.engineStatusBadge.className = 'hidden xl:flex text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200 items-center gap-1.5 font-mono';
     }
   }
 
@@ -726,9 +726,9 @@ class AppController {
   renderSoundButton() {
     if (!this.dom.soundToggleBtn) return;
     if (this.state.soundEnabled) {
-      this.dom.soundToggleBtn.innerHTML = `<i data-lucide="volume-2" class="w-3.5 h-3.5 text-slate-300"></i><span class="hidden sm:inline text-xs text-slate-300">SFX</span>`;
+      this.dom.soundToggleBtn.innerHTML = `<i data-lucide="volume-2" class="w-3.5 h-3.5 text-slate-600"></i><span class="hidden sm:inline text-xs text-slate-600">SFX</span>`;
     } else {
-      this.dom.soundToggleBtn.innerHTML = `<i data-lucide="volume-x" class="w-3.5 h-3.5 text-slate-500"></i><span class="hidden sm:inline text-xs text-slate-500">Muted</span>`;
+      this.dom.soundToggleBtn.innerHTML = `<i data-lucide="volume-x" class="w-3.5 h-3.5 text-slate-400"></i><span class="hidden sm:inline text-xs text-slate-400">Muted</span>`;
     }
     if (window.lucide) window.lucide.createIcons();
   }
@@ -739,13 +739,13 @@ class AppController {
     this.saveState();
 
     if (tab === 'theory') {
-      this.dom.theoryTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-sky-500/10 text-sky-400 border border-sky-500/30';
-      this.dom.practiceTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60';
+      this.dom.theoryTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-sky-600 text-white shadow-xs';
+      this.dom.practiceTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100';
       this.dom.theoryContent.classList.remove('hidden');
       this.dom.practiceContent.classList.add('hidden');
     } else {
-      this.dom.practiceTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-sky-500/10 text-sky-400 border border-sky-500/30';
-      this.dom.theoryTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60';
+      this.dom.practiceTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-sky-600 text-white shadow-xs';
+      this.dom.theoryTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100';
       this.dom.practiceContent.classList.remove('hidden');
       this.dom.theoryContent.classList.add('hidden');
     }
@@ -774,11 +774,11 @@ class AppController {
     this.saveState();
 
     if (this.state.isSandboxMode) {
-      this.dom.sandboxToggleBtn.classList.add('bg-sky-500/20', 'border-sky-500/50', 'text-sky-300');
-      this.dom.sandboxToggleBtn.classList.remove('bg-slate-800/80', 'border-slate-700', 'text-slate-300');
+      this.dom.sandboxToggleBtn.classList.add('bg-sky-50', 'border-sky-300', 'text-sky-700');
+      this.dom.sandboxToggleBtn.classList.remove('bg-white', 'border-slate-200', 'text-slate-700');
     } else {
-      this.dom.sandboxToggleBtn.classList.remove('bg-sky-500/20', 'border-sky-500/50', 'text-sky-300');
-      this.dom.sandboxToggleBtn.classList.add('bg-slate-800/80', 'border-slate-700', 'text-slate-300');
+      this.dom.sandboxToggleBtn.classList.remove('bg-sky-50', 'border-sky-300', 'text-sky-700');
+      this.dom.sandboxToggleBtn.classList.add('bg-white', 'border-slate-200', 'text-slate-700');
     }
 
     this.renderLessonView();
@@ -798,12 +798,12 @@ class AppController {
 
       html += `
         <div class="mb-3.5">
-          <div class="flex items-center justify-between px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <div class="flex items-center justify-between px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500">
             <span class="flex items-center gap-2">
-              <i data-lucide="${mod.icon}" class="w-3.5 h-3.5 text-sky-400"></i>
+              <i data-lucide="${mod.icon}" class="w-3.5 h-3.5 text-sky-600"></i>
               ${mod.number}. ${mod.title}
             </span>
-            <span class="text-[11px] font-mono text-slate-400">${modProgressPct}%</span>
+            <span class="text-[11px] font-mono text-slate-500 font-medium">${modProgressPct}%</span>
           </div>
           <div class="space-y-1 mt-1 pl-1">
       `;
@@ -814,11 +814,11 @@ class AppController {
 
         let itemClass = 'flex items-center justify-between px-2.5 py-2 rounded-md text-xs transition-colors cursor-pointer group ';
         if (isCurrent) {
-          itemClass += 'bg-slate-800 text-sky-300 border-l-2 border-sky-400 font-semibold ';
+          itemClass += 'bg-sky-50 text-sky-800 border-l-2 border-sky-600 font-semibold ';
         } else if (isLessonDone) {
-          itemClass += 'text-slate-300 hover:bg-slate-800/50 hover:text-white font-medium ';
+          itemClass += 'text-slate-700 hover:bg-slate-100 font-medium ';
         } else {
-          itemClass += 'text-slate-400 hover:bg-slate-800/30 hover:text-slate-200 ';
+          itemClass += 'text-slate-500 hover:bg-slate-50 ';
         }
 
         html += `
@@ -826,14 +826,14 @@ class AppController {
             <div class="flex items-center gap-2 truncate">
               ${
                 isLessonDone
-                  ? '<i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>'
+                  ? '<i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>'
                   : (isCurrent
-                      ? '<i data-lucide="circle-dot" class="w-3.5 h-3.5 text-sky-400 shrink-0"></i>'
-                      : '<i data-lucide="circle" class="w-3.5 h-3.5 text-slate-600 shrink-0 group-hover:text-slate-400"></i>')
+                      ? '<i data-lucide="circle-dot" class="w-3.5 h-3.5 text-sky-600 shrink-0"></i>'
+                      : '<i data-lucide="circle" class="w-3.5 h-3.5 text-slate-400 shrink-0 group-hover:text-slate-600"></i>')
               }
               <span class="truncate">${lesson.title}</span>
             </div>
-            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 group-hover:text-sky-300 shrink-0">
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 group-hover:text-sky-700 shrink-0">
               ${lesson.xp} XP
             </span>
           </div>
@@ -875,15 +875,15 @@ class AppController {
 
     // Update Header / Banner Info
     if (this.dom.moduleTitleEl) {
-      this.dom.moduleTitleEl.innerHTML = `<i data-lucide="${mod.icon}" class="w-3.5 h-3.5 text-sky-400"></i> Module ${mod.number}: ${mod.title}`;
+      this.dom.moduleTitleEl.innerHTML = `<i data-lucide="${mod.icon}" class="w-3.5 h-3.5 text-sky-600"></i> Module ${mod.number}: ${mod.title}`;
     }
     if (this.dom.lessonTitleEl) this.dom.lessonTitleEl.textContent = lesson.title;
     if (this.dom.lessonSubtitleEl) this.dom.lessonSubtitleEl.textContent = lesson.subtitle;
     if (this.dom.lessonXpBadge) {
       this.dom.lessonXpBadge.textContent = `${lesson.xp} XP`;
       this.dom.lessonXpBadge.className = isCompleted
-        ? 'px-2.5 py-0.5 rounded text-xs font-mono font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800/60 flex items-center gap-1'
-        : 'px-2.5 py-0.5 rounded text-xs font-mono font-semibold bg-sky-950 text-sky-300 border border-sky-800/60 flex items-center gap-1';
+        ? 'px-2.5 py-0.5 rounded text-xs font-mono font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1'
+        : 'px-2.5 py-0.5 rounded text-xs font-mono font-semibold bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1';
     }
     if (this.dom.lessonStoryEl) this.dom.lessonStoryEl.textContent = lesson.story;
 
@@ -911,13 +911,13 @@ class AppController {
 
   renderSandboxView() {
     if (this.dom.moduleTitleEl) {
-      this.dom.moduleTitleEl.innerHTML = `<i data-lucide="code-2" class="w-3.5 h-3.5 text-sky-400"></i> Free Practice Sandbox`;
+      this.dom.moduleTitleEl.innerHTML = `<i data-lucide="code-2" class="w-3.5 h-3.5 text-sky-600"></i> Free Practice Sandbox`;
     }
     if (this.dom.lessonTitleEl) this.dom.lessonTitleEl.textContent = 'Python Practice Sandbox';
     if (this.dom.lessonSubtitleEl) this.dom.lessonSubtitleEl.textContent = 'An open sandbox to write, run, and experiment with any Python code';
     if (this.dom.lessonXpBadge) {
       this.dom.lessonXpBadge.textContent = 'Open Practice';
-      this.dom.lessonXpBadge.className = 'px-2.5 py-0.5 rounded text-xs font-mono font-semibold bg-sky-950 text-sky-300 border border-sky-800/60 flex items-center gap-1';
+      this.dom.lessonXpBadge.className = 'px-2.5 py-0.5 rounded text-xs font-mono font-semibold bg-sky-50 text-sky-700 border border-sky-200 flex items-center gap-1';
     }
     if (this.dom.lessonStoryEl) {
       this.dom.lessonStoryEl.textContent = 'Welcome to the Python sandbox! Write and experiment with variables, calculations, loops, data structures, and functions freely.';
@@ -939,7 +939,7 @@ class AppController {
     let html = `
       <div class="space-y-4">
         <!-- Overview -->
-        <div class="p-4 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-300 leading-relaxed text-xs sm:text-sm">
+        <div class="p-4 rounded-lg bg-white border border-slate-200 text-slate-700 leading-relaxed text-xs sm:text-sm shadow-xs">
           ${t.overview.replace(/\n/g, '<br>')}
         </div>
 
@@ -949,18 +949,18 @@ class AppController {
 
     t.sections.forEach((sec, idx) => {
       html += `
-        <div class="card-panel p-4 sm:p-5 card-interactive">
-          <h4 class="text-xs sm:text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+        <div class="card-panel p-4 sm:p-5 card-interactive bg-white">
+          <h4 class="text-xs sm:text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span>
             ${sec.title}
           </h4>
-          <p class="text-xs sm:text-sm text-slate-300 mb-3 leading-relaxed">${sec.content}</p>
+          <p class="text-xs sm:text-sm text-slate-600 mb-3 leading-relaxed">${sec.content}</p>
           <div class="relative group">
-            <pre class="bg-slate-950 p-3.5 rounded font-mono text-xs text-sky-200 overflow-x-auto border border-slate-800"><code>${this.escapeHtml(sec.code)}</code></pre>
+            <pre class="bg-slate-50 p-3.5 rounded font-mono text-xs text-slate-900 overflow-x-auto border border-slate-200"><code>${this.escapeHtml(sec.code)}</code></pre>
             <button 
               onclick="window.antiGravityApp.loadSnippetToEditor(\`${this.escapeForSnippet(sec.code)}\`)"
-              class="absolute top-2 right-2 px-2 py-1 rounded bg-slate-800 hover:bg-sky-600 text-slate-300 hover:text-white text-xs font-medium transition-all opacity-0 group-hover:opacity-100 flex items-center gap-1 shadow-sm">
-              <i data-lucide="play" class="w-3 h-3"></i> Try In Editor
+              class="absolute top-2 right-2 px-2 py-1 rounded bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-medium transition-all opacity-0 group-hover:opacity-100 flex items-center gap-1 shadow-xs">
+              <i data-lucide="play" class="w-3 h-3 text-sky-600"></i> Try In Editor
             </button>
           </div>
         </div>
@@ -971,9 +971,9 @@ class AppController {
         </div>
 
         <!-- Syntax Breakdown Matrix -->
-        <div class="card-panel p-4 sm:p-5">
-          <h4 class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-2.5 flex items-center gap-1.5">
-            <i data-lucide="code-2" class="w-3.5 h-3.5 text-sky-400"></i>
+        <div class="card-panel p-4 sm:p-5 bg-white">
+          <h4 class="text-xs uppercase tracking-wider font-semibold text-slate-500 mb-2.5 flex items-center gap-1.5">
+            <i data-lucide="code-2" class="w-3.5 h-3.5 text-sky-600"></i>
             Syntax Breakdown
           </h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -981,9 +981,9 @@ class AppController {
 
     t.syntaxTokens.forEach((item) => {
       html += `
-        <div class="p-2.5 rounded bg-slate-900 border border-slate-800 flex flex-col justify-center">
-          <code class="text-xs font-mono text-sky-300 font-semibold mb-0.5">${this.escapeHtml(item.token)}</code>
-          <span class="text-xs text-slate-400">${item.description}</span>
+        <div class="p-2.5 rounded bg-slate-50 border border-slate-200 flex flex-col justify-center">
+          <code class="text-xs font-mono text-sky-700 font-semibold mb-0.5">${this.escapeHtml(item.token)}</code>
+          <span class="text-xs text-slate-600">${item.description}</span>
         </div>
       `;
     });
@@ -993,11 +993,11 @@ class AppController {
         </div>
 
         <!-- Pro Tip -->
-        <div class="p-3.5 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-start gap-2.5">
-          <i data-lucide="info" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+        <div class="p-3.5 rounded-lg bg-amber-50 border border-amber-200 flex items-start gap-2.5">
+          <i data-lucide="info" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
           <div>
-            <h5 class="text-xs font-semibold text-amber-300 mb-0.5">Pro Tip</h5>
-            <p class="text-xs text-amber-200/90 leading-relaxed">${t.cosmicTip}</p>
+            <h5 class="text-xs font-semibold text-amber-800 mb-0.5">Pro Tip</h5>
+            <p class="text-xs text-amber-900/90 leading-relaxed">${t.cosmicTip}</p>
           </div>
         </div>
 
@@ -1005,7 +1005,7 @@ class AppController {
         <div class="pt-2 flex justify-end">
           <button 
             onclick="window.antiGravityApp.switchTab('practice')"
-            class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs sm:text-sm transition-colors flex items-center gap-1.5 shadow-sm">
+            class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs sm:text-sm transition-colors flex items-center gap-1.5 shadow-xs">
             <span>Proceed to Exercises</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
@@ -1024,8 +1024,8 @@ class AppController {
       let chkHtml = '';
       lesson.practice.checklist.forEach((item, idx) => {
         chkHtml += `
-          <div class="flex items-start gap-2.5 text-xs text-slate-300">
-            <span class="w-4 h-4 rounded bg-slate-800 text-sky-400 border border-slate-700 flex items-center justify-center font-mono text-[10px] shrink-0 mt-0.5 font-medium">
+          <div class="flex items-start gap-2.5 text-xs text-slate-700">
+            <span class="w-4 h-4 rounded bg-slate-100 text-sky-700 border border-slate-200 flex items-center justify-center font-mono text-[10px] shrink-0 mt-0.5 font-medium">
               ${idx + 1}
             </span>
             <span class="leading-relaxed">${item}</span>
@@ -1173,7 +1173,7 @@ class AppController {
       content += `<div class="text-slate-400 italic font-mono">&lt;Process finished with return code 0 (no output)&gt;</div>`;
     } else {
       const escaped = this.escapeHtml(stdout);
-      content += `<div class="text-slate-100 font-mono whitespace-pre-wrap leading-relaxed">${escaped}</div>`;
+      content += `<div class="text-slate-800 font-mono whitespace-pre-wrap leading-relaxed">${escaped}</div>`;
     }
 
     this.dom.terminalOutput.innerHTML = content;
@@ -1185,12 +1185,12 @@ class AppController {
     let content = `<div class="text-[11px] text-slate-500 mb-2 font-mono">[${timestamp}] All unit checks validated in ${execTime}ms</div>`;
 
     if (stdout && stdout.trim()) {
-      content += `<div class="text-slate-100 font-mono whitespace-pre-wrap mb-2.5">${this.escapeHtml(stdout)}</div>`;
+      content += `<div class="text-slate-800 font-mono whitespace-pre-wrap mb-2.5">${this.escapeHtml(stdout)}</div>`;
     }
 
     content += `
-      <div class="p-2.5 rounded bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-mono flex items-center gap-2">
-        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+      <div class="p-2.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-mono flex items-center gap-2">
+        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600 shrink-0"></i>
         <span>${message}</span>
       </div>
     `;
@@ -1204,8 +1204,8 @@ class AppController {
     const timestamp = new Date().toLocaleTimeString();
     let content = `
       <div class="text-[11px] text-slate-500 mb-2 font-mono">[${timestamp}] Exception encountered (${engine}) in ${execTime}ms</div>
-      <div class="p-2.5 rounded bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs font-mono leading-relaxed whitespace-pre-wrap">
-        <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-rose-400 inline mr-1 align-text-bottom"></i>${this.escapeHtml(error)}
+      <div class="p-2.5 rounded bg-rose-50 border border-rose-200 text-rose-800 text-xs font-mono leading-relaxed whitespace-pre-wrap">
+        <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-rose-600 inline mr-1 align-text-bottom"></i>${this.escapeHtml(error)}
       </div>
     `;
 
@@ -1219,14 +1219,14 @@ class AppController {
     let content = `<div class="text-[11px] text-slate-500 mb-2 font-mono">[${timestamp}] Output did not match expected solution in ${execTime}ms</div>`;
 
     if (stdout && stdout.trim()) {
-      content += `<div class="text-slate-200 font-mono whitespace-pre-wrap mb-2">${this.escapeHtml(stdout)}</div>`;
+      content += `<div class="text-slate-800 font-mono whitespace-pre-wrap mb-2">${this.escapeHtml(stdout)}</div>`;
     }
 
     content += `
-      <div class="p-2.5 rounded bg-amber-950/50 border border-amber-500/40 text-amber-300 text-xs font-mono flex items-start gap-2">
-        <i data-lucide="info" class="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5"></i>
+      <div class="p-2.5 rounded bg-amber-50 border border-amber-200 text-amber-900 text-xs font-mono flex items-start gap-2">
+        <i data-lucide="info" class="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5"></i>
         <div>
-          <strong class="block text-amber-200">Objective Incomplete:</strong>
+          <strong class="block text-amber-900">Objective Incomplete:</strong>
           <span>${message}</span>
         </div>
       </div>
@@ -1238,7 +1238,7 @@ class AppController {
   }
 
   clearTerminal() {
-    this.dom.terminalOutput.innerHTML = `<span class="text-slate-500 font-mono text-xs">Ready. Output will appear here after running code.</span>`;
+    this.dom.terminalOutput.innerHTML = `<span class="text-slate-400 font-mono text-xs">Ready. Output will appear here after running code.</span>`;
     this.setTerminalStatus('idle');
     if (this.dom.terminalExecTime) this.dom.terminalExecTime.textContent = '0ms';
   }
@@ -1246,12 +1246,12 @@ class AppController {
   setTerminalStatus(status) {
     if (!this.dom.terminalStatus) return;
     const chips = {
-      idle: { text: 'IDLE', color: 'bg-slate-800 text-slate-400 border-slate-700' },
-      executing: { text: 'RUNNING', color: 'bg-sky-950 text-sky-300 border-sky-700 animate-pulse' },
-      success: { text: 'SUCCESS', color: 'bg-emerald-950 text-emerald-300 border-emerald-700' },
-      passed: { text: 'PASSED', color: 'bg-emerald-950 text-emerald-300 border-emerald-700' },
-      error: { text: 'ERROR', color: 'bg-rose-950 text-rose-300 border-rose-700' },
-      failed: { text: 'FAILED', color: 'bg-amber-950 text-amber-300 border-amber-700' }
+      idle: { text: 'IDLE', color: 'bg-slate-100 text-slate-600 border-slate-300' },
+      executing: { text: 'RUNNING', color: 'bg-sky-50 text-sky-700 border-sky-300 animate-pulse' },
+      success: { text: 'SUCCESS', color: 'bg-emerald-50 text-emerald-700 border-emerald-300' },
+      passed: { text: 'PASSED', color: 'bg-emerald-50 text-emerald-700 border-emerald-300 font-bold' },
+      error: { text: 'ERROR', color: 'bg-rose-50 text-rose-700 border-rose-300' },
+      failed: { text: 'FAILED', color: 'bg-amber-50 text-amber-700 border-amber-300' }
     };
     const c = chips[status] || chips.idle;
     this.dom.terminalStatus.textContent = c.text;
@@ -1310,9 +1310,9 @@ class AppController {
     if (currentLvl < hints.length) {
       const hint = hints[currentLvl];
       const hintCard = document.createElement('div');
-      hintCard.className = 'p-3 rounded-lg bg-slate-900 border border-slate-700/80 text-xs text-slate-300 leading-relaxed';
+      hintCard.className = 'p-3 rounded-lg bg-white border border-amber-200 text-xs text-slate-700 leading-relaxed shadow-xs';
       hintCard.innerHTML = `
-        <div class="flex items-center gap-1.5 text-amber-400 font-semibold mb-1">
+        <div class="flex items-center gap-1.5 text-amber-700 font-semibold mb-1">
           <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
           <span>Hint ${hint.level}: ${hint.title}</span>
         </div>
@@ -1350,15 +1350,15 @@ class AppController {
 
   showBadgeToast(badge) {
     const toast = document.createElement('div');
-    toast.className = 'fixed bottom-5 right-5 z-50 p-3.5 rounded-lg bg-[#0d121f] border border-slate-700 flex items-center gap-3 shadow-xl transition-all duration-300';
+    toast.className = 'fixed bottom-5 right-5 z-50 p-3.5 rounded-lg bg-white border border-slate-200 flex items-center gap-3 shadow-xl transition-all duration-300';
     toast.innerHTML = `
-      <div class="w-9 h-9 rounded-md bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+      <div class="w-9 h-9 rounded-md bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shrink-0">
         <i data-lucide="${badge.icon}" class="w-4 h-4"></i>
       </div>
       <div>
-        <span class="text-[10px] font-semibold uppercase tracking-wider text-amber-400 block">Achievement Unlocked</span>
-        <strong class="text-xs font-semibold text-white block">${badge.name}</strong>
-        <span class="text-[11px] text-slate-400">${badge.description}</span>
+        <span class="text-[10px] font-semibold uppercase tracking-wider text-amber-700 block">Achievement Unlocked</span>
+        <strong class="text-xs font-semibold text-slate-900 block">${badge.name}</strong>
+        <span class="text-[11px] text-slate-500">${badge.description}</span>
       </div>
     `;
     document.body.appendChild(toast);
@@ -1432,23 +1432,23 @@ class AppController {
       html += `
         <div class="p-3.5 rounded-lg border transition-all ${
           unlocked
-            ? 'bg-slate-900 border-slate-700 shadow-sm'
-            : 'bg-slate-950/60 border-slate-800/80 opacity-40'
+            ? 'bg-white border-slate-200 shadow-xs'
+            : 'bg-slate-50 border-slate-200/80 opacity-50'
         }">
           <div class="flex items-center gap-2.5 mb-1.5">
             <div class="w-8 h-8 rounded-md flex items-center justify-center ${
-              unlocked ? `bg-amber-500/20 text-amber-400` : 'bg-slate-800 text-slate-500'
+              unlocked ? `bg-amber-50 text-amber-600 border border-amber-200` : 'bg-slate-100 text-slate-400'
             }">
               <i data-lucide="${b.icon}" class="w-4 h-4"></i>
             </div>
             <div>
-              <h5 class="text-xs font-semibold ${unlocked ? 'text-white' : 'text-slate-400'}">${b.name}</h5>
-              <span class="text-[10px] font-mono uppercase tracking-wider ${unlocked ? 'text-emerald-400' : 'text-slate-500'}">
+              <h5 class="text-xs font-semibold ${unlocked ? 'text-slate-900' : 'text-slate-500'}">${b.name}</h5>
+              <span class="text-[10px] font-mono uppercase tracking-wider ${unlocked ? 'text-emerald-600 font-medium' : 'text-slate-400'}">
                 ${unlocked ? 'UNLOCKED' : 'LOCKED'}
               </span>
             </div>
           </div>
-          <p class="text-[11px] text-slate-400">${b.description}</p>
+          <p class="text-[11px] text-slate-500">${b.description}</p>
         </div>
       `;
     });
