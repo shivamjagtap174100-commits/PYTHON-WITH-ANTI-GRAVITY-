@@ -57,6 +57,17 @@ print("Python is fun!")  # You can also add comments at the end of a line`
             { token: '#', description: 'Comment indicator; everything after # on the line is ignored' }
           ]
         },
+        quiz: {
+          question: 'Which of the following lines of code is valid Python syntax to print text to the screen?',
+          options: [
+            'Print("Hello, World!")',
+            'print "Hello, World!"',
+            'print("Hello, World!")',
+            'echo("Hello, World!")'
+          ],
+          correctIndex: 2,
+          explanation: 'Python is strictly case-sensitive and requires lowercase print(...) with parentheses enclosing the string argument.'
+        },
         practice: {
           objective: 'Write your first Python program to print greetings on two separate lines.',
           checklist: [
@@ -157,6 +168,17 @@ print(f"Student {name} is {age} years old.")
             { token: 'snake_case', description: 'Naming style with lowercase words separated by underscores' },
             { token: 'f"Text {var}"', description: 'f-string to dynamically insert variables into text' }
           ]
+        },
+        quiz: {
+          question: 'Which of the following is an INVALID variable name in Python?',
+          options: [
+            'total_score',
+            '_user_id',
+            'user2',
+            '2nd_user'
+          ],
+          correctIndex: 3,
+          explanation: 'Variable names in Python cannot start with a digit. They must begin with a letter (a-z, A-Z) or an underscore (_).'
         },
         practice: {
           objective: 'Declare student variables and print a formatted summary sentence.',
@@ -265,6 +287,17 @@ print(f"Total Bill: {total}")  # Total Bill: 100`
             { token: '/', description: 'Division operator (returns float)' }
           ]
         },
+        quiz: {
+          question: 'What will the expression 10 / 2 evaluate to in Python?',
+          options: [
+            '5',
+            '5.0',
+            '"5"',
+            '5.00'
+          ],
+          correctIndex: 1,
+          explanation: 'In Python, single slash division / always returns a floating-point number (float), even when dividing evenly.'
+        },
         practice: {
           objective: 'Calculate the total bill for two shopping items and print the result.',
           checklist: [
@@ -356,6 +389,17 @@ print(5 ** 2)  # 25 (5 squared)`
             { token: '//', description: 'Floor division; divides and truncates decimals' },
             { token: '**', description: 'Power operator; raises base to exponent' }
           ]
+        },
+        quiz: {
+          question: 'What will the expression 17 % 5 evaluate to in Python?',
+          options: [
+            '3',
+            '2',
+            '3.4',
+            '1'
+          ],
+          correctIndex: 1,
+          explanation: 'The % (modulo) operator returns the remainder left over after integer division. 17 divided by 5 is 3 with a remainder of 2.'
         },
         practice: {
           objective: 'Compute the remainder of 17 divided by 5, and compute 2 to the power of 5.',
@@ -452,6 +496,17 @@ print(type(98.6))   # <class 'float'>`
             { token: 'float(...)', description: 'Converts value into a floating-point decimal' },
             { token: 'str(...)', description: 'Converts value into text string' }
           ]
+        },
+        quiz: {
+          question: 'What will print("20" + "30") display in the terminal?',
+          options: [
+            '50',
+            '2030',
+            'TypeError: cannot add strings',
+            '"50"'
+          ],
+          correctIndex: 1,
+          explanation: 'Both values are strings wrapped in quotes, so the + operator performs string concatenation (joining them together into "2030").'
         },
         practice: {
           objective: 'Convert a string score to an integer, add bonus points, and print the total.',
@@ -562,6 +617,17 @@ if age >= 18:
             { token: '== and !=', description: 'Check equality or inequality' }
           ]
         },
+        quiz: {
+          question: 'What character must be placed at the end of an if statement line before writing the indented code block?',
+          options: [
+            'Semicolon ;',
+            'Colon :',
+            'Curly brace {',
+            'The word then'
+          ],
+          correctIndex: 1,
+          explanation: 'In Python, header statements such as if, else, for, while, and def must end with a colon : to introduce the indented block.'
+        },
         practice: {
           objective: 'Check if a student passed their examination based on their marks.',
           checklist: [
@@ -663,6 +729,17 @@ if age >= 18 and has_id:
             { token: 'and', description: 'Requires both sides to be True' },
             { token: 'or', description: 'Requires at least one side to be True' }
           ]
+        },
+        quiz: {
+          question: 'What is the boolean result of (5 > 3) and (2 > 10) in Python?',
+          options: [
+            'True',
+            'False',
+            'None',
+            'SyntaxError'
+          ],
+          correctIndex: 1,
+          explanation: 'The and logical operator requires BOTH conditions to be True. Since 2 > 10 is False, the overall expression evaluates to False.'
         },
         practice: {
           objective: 'Assign the correct grade for score = 85 using if, elif, and else.',
@@ -774,6 +851,17 @@ else:
             { token: 'range(start, stop)', description: 'Generates numbers from start up to stop - 1' }
           ]
         },
+        quiz: {
+          question: 'Which numbers will be generated by the loop for i in range(1, 5):?',
+          options: [
+            '1, 2, 3, 4, 5',
+            '0, 1, 2, 3, 4',
+            '1, 2, 3, 4',
+            '2, 3, 4, 5'
+          ],
+          correctIndex: 2,
+          explanation: 'range(start, stop) is stop-exclusive: it starts at start (1) and terminates right before reaching stop (5), producing 1, 2, 3, and 4.'
+        },
         practice: {
           objective: 'Write a for loop using range() to print numbers from 1 to 5 on separate lines.',
           checklist: [
@@ -856,6 +944,17 @@ while count <= 3:
             { token: 'break', description: 'Immediately stops and exits the loop' },
             { token: 'count += 1', description: 'Increments count by 1' }
           ]
+        },
+        quiz: {
+          question: 'What happens when Python encounters a break statement inside a loop?',
+          options: [
+            'It skips to the next iteration of the loop',
+            'It immediately terminates the loop and continues after it',
+            'It restarts the loop from count = 0',
+            'It raises a runtime exception'
+          ],
+          correctIndex: 1,
+          explanation: 'break immediately terminates the nearest enclosing loop. To skip to the next cycle without stopping the loop, you would use continue.'
         },
         practice: {
           objective: 'Write a while loop starting at count = 1 that prints "Count: 1", "Count: 2", "Count: 3".',
@@ -961,6 +1060,17 @@ print(colors)       # ['Red', 'Green', 'Blue', 'Yellow']`
             { token: 'len(list)', description: 'Returns the total number of items' }
           ]
         },
+        quiz: {
+          question: "Given colors = ['red', 'green', 'blue'], what will print(colors[0]) output?",
+          options: [
+            "'red'",
+            "'green'",
+            "'blue'",
+            "IndexError"
+          ],
+          correctIndex: 0,
+          explanation: "Python lists are 0-indexed. The first item is at index 0, the second at index 1, and so on."
+        },
         practice: {
           objective: 'Create a list of colors, append "Yellow", and print the total count of colors.',
           checklist: [
@@ -1048,6 +1158,17 @@ student["city"] = "Mumbai"  # Added new key "city"`
             { token: 'dict[key]', description: 'Look up the value associated with key' },
             { token: 'dict[key] = value', description: 'Sets or updates a key to a new value' }
           ]
+        },
+        quiz: {
+          question: "How do you access the value associated with key 'age' in dictionary student = {'name': 'Alex', 'age': 16}?",
+          options: [
+            'student.age',
+            "student('age')",
+            "student['age']",
+            'student[1]'
+          ],
+          correctIndex: 2,
+          explanation: "In Python, dictionary values are accessed using square brackets with the key name: dict['key']."
         },
         practice: {
           objective: 'Initialize a student dictionary, update their grade to 11, and print their status.',
@@ -1150,6 +1271,17 @@ print(users[0]["level"])       # 5`
             { token: 'matrix[row][col]', description: 'Accesses item in a nested 2D list' },
             { token: 'records[0]["key"]', description: 'Accesses a key from a dictionary inside a list' }
           ]
+        },
+        quiz: {
+          question: 'Given matrix = [[10, 20], [30, 40]], which expression accesses the number 20?',
+          options: [
+            'matrix[0][1]',
+            'matrix[1][0]',
+            'matrix[0][0]',
+            'matrix[1][1]'
+          ],
+          correctIndex: 0,
+          explanation: 'The first index 0 picks the first row [10, 20], and the second index 1 selects the second item in that row, which is 20.'
         },
         practice: {
           objective: 'Access a 2D matrix element and access a user record from a list of dictionaries.',
@@ -1291,6 +1423,14 @@ const BADGES = [
     description: 'Solved a coding challenge on your very first run without syntax errors.',
     color: 'from-cyan-400 to-emerald-500',
     condition: (state) => state.flawlessRuns > 0
+  },
+  {
+    id: 'badge-quiz-scholar',
+    name: 'Concept Quiz Scholar',
+    icon: 'check-square',
+    description: 'Passed 3 or more concept check quizzes across the course.',
+    color: 'from-sky-500 to-blue-600',
+    condition: (state) => (state.completedQuizzes || []).length >= 3
   }
 ];
 

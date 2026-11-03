@@ -54,6 +54,7 @@ Aligned with foundational university computer science curriculum:
 - **Dual-Engine Execution**: Instant 0ms Local JavaScript VM + full CPython 3.12 WebAssembly (Pyodide).
 - **Professional Code Editor**: Styled after VS Code Dark Obsidian theme with gutter line numbers, 4-space Tab key indentation, automatic colon indent, character counter, and starter template resets.
 - **Mobile Touch Toolbar**: Floating quick-key bar (`Tab`, `:`, `( )`, `[ ]`, `{ }`, `" "`, `' '`, `=`, `+`, `#`) for fast, hassle-free coding on mobile devices.
+- **Interactive Concept Quizzes**: Multiple-choice knowledge checkpoint in every lesson directly below the concepts with immediate pedagogical explanations and bonus XP (+25 XP).
 - **Developer Console**: Live execution diagnostics (in ms), status pills (`IDLE`, `RUNNING`, `PASSED`, `ERROR`), clear and copy buttons.
 - **Guidance & Hint System**: Context-sensitive syntax checks and multi-tiered hints to help learners resolve errors without giving away the full answer immediately.
 - **Interactive Progress & Badges**: Milestone tracking (Beginner → Explorer → Logic Master → Data Architect → Python Pro), celebration feedback, Web Audio sound effects, and unlockable achievement medals.

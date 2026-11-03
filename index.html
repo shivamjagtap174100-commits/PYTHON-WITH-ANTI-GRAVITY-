@@ -220,14 +220,21 @@
           </div>
 
           <!-- Tab Navigation (Theory vs Practice) -->
-          <div class="mt-4 pt-3.5 border-t border-slate-200 flex items-center gap-2">
-            <button id="tab-btn-theory" class="flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-sky-600 text-white shadow-xs">
-              <i data-lucide="book-open" class="w-4 h-4"></i>
-              <span>Theory & Concepts</span>
-            </button>
-            <button id="tab-btn-practice" class="flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100">
-              <i data-lucide="terminal" class="w-4 h-4"></i>
-              <span>Code Editor & Exercises</span>
+          <div class="mt-4 pt-3.5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <button id="tab-btn-theory" class="flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-sky-600 text-white shadow-xs">
+                <i data-lucide="book-open" class="w-4 h-4"></i>
+                <span>Theory & Concepts</span>
+              </button>
+              <button id="tab-btn-practice" class="flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                <i data-lucide="terminal" class="w-4 h-4"></i>
+                <span>Code Editor & Exercises</span>
+              </button>
+            </div>
+
+            <button onclick="window.antiGravityApp.scrollToQuiz()" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:text-sky-700 text-xs font-medium transition-colors flex items-center gap-1.5 shadow-xs">
+              <i data-lucide="help-circle" class="w-3.5 h-3.5 text-sky-600"></i>
+              <span>Topic Quiz</span>
             </button>
           </div>
         </section>
