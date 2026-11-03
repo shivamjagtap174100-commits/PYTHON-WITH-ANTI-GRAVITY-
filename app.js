@@ -169,7 +169,7 @@ class Starfield {
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
     this.stars = [];
-    this.numStars = 140;
+    this.numStars = 45;
     this.mouseX = 0;
     this.mouseY = 0;
 
@@ -190,11 +190,11 @@ class Starfield {
       this.stars.push({
         x: Math.random() * this.width,
         y: Math.random() * this.height,
-        size: Math.random() * 1.8 + 0.4,
-        speed: Math.random() * 0.35 + 0.1,
-        alpha: Math.random() * 0.8 + 0.2,
-        pulseSpeed: Math.random() * 0.02 + 0.005,
-        color: Math.random() > 0.4 ? '#22d3ee' : (Math.random() > 0.5 ? '#a855f7' : '#ffffff')
+        size: Math.random() * 1.2 + 0.3,
+        speed: Math.random() * 0.15 + 0.05,
+        alpha: Math.random() * 0.3 + 0.05,
+        pulseSpeed: Math.random() * 0.008 + 0.002,
+        color: '#94a3b8'
       });
     }
   }
@@ -515,11 +515,11 @@ class AppController {
   updateEngineIndicator(statusInfo) {
     if (!this.dom.engineStatusBadge) return;
     if (statusInfo.isReady) {
-      this.dom.engineStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> Engine: WASM CPython 3.12`;
-      this.dom.engineStatusBadge.className = 'text-xs px-2.5 py-1 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-500/30 flex items-center gap-1.5';
+      this.dom.engineStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Engine: WASM CPython 3.12`;
+      this.dom.engineStatusBadge.className = 'hidden xl:flex text-xs px-2.5 py-1 rounded-md bg-slate-900 text-slate-300 border border-slate-700/80 items-center gap-1.5 font-mono';
     } else {
-      this.dom.engineStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-violet-400"></span> Engine: Quantum Local VM`;
-      this.dom.engineStatusBadge.className = 'text-xs px-2.5 py-1 rounded-full bg-violet-950/80 text-violet-300 border border-violet-500/30 flex items-center gap-1.5';
+      this.dom.engineStatusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-sky-400"></span> Engine: Local VM`;
+      this.dom.engineStatusBadge.className = 'hidden xl:flex text-xs px-2.5 py-1 rounded-md bg-slate-900 text-slate-300 border border-slate-700/80 items-center gap-1.5 font-mono';
     }
   }
 
@@ -726,9 +726,9 @@ class AppController {
   renderSoundButton() {
     if (!this.dom.soundToggleBtn) return;
     if (this.state.soundEnabled) {
-      this.dom.soundToggleBtn.innerHTML = `<i data-lucide="volume-2" class="w-4 h-4 text-cyan-400"></i><span class="hidden sm:inline text-xs text-slate-300">SFX On</span>`;
+      this.dom.soundToggleBtn.innerHTML = `<i data-lucide="volume-2" class="w-3.5 h-3.5 text-slate-300"></i><span class="hidden sm:inline text-xs text-slate-300">SFX</span>`;
     } else {
-      this.dom.soundToggleBtn.innerHTML = `<i data-lucide="volume-x" class="w-4 h-4 text-slate-500"></i><span class="hidden sm:inline text-xs text-slate-400">Muted</span>`;
+      this.dom.soundToggleBtn.innerHTML = `<i data-lucide="volume-x" class="w-3.5 h-3.5 text-slate-500"></i><span class="hidden sm:inline text-xs text-slate-500">Muted</span>`;
     }
     if (window.lucide) window.lucide.createIcons();
   }
@@ -739,13 +739,13 @@ class AppController {
     this.saveState();
 
     if (tab === 'theory') {
-      this.dom.theoryTabBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm';
-      this.dom.practiceTabBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/40';
+      this.dom.theoryTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-sky-500/10 text-sky-400 border border-sky-500/30';
+      this.dom.practiceTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60';
       this.dom.theoryContent.classList.remove('hidden');
       this.dom.practiceContent.classList.add('hidden');
     } else {
-      this.dom.practiceTabBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-300 border border-violet-500/40 shadow-sm';
-      this.dom.theoryTabBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/40';
+      this.dom.practiceTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-sky-500/10 text-sky-400 border border-sky-500/30';
+      this.dom.theoryTabBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60';
       this.dom.practiceContent.classList.remove('hidden');
       this.dom.theoryContent.classList.add('hidden');
     }
@@ -774,11 +774,11 @@ class AppController {
     this.saveState();
 
     if (this.state.isSandboxMode) {
-      this.dom.sandboxToggleBtn.classList.add('bg-cyan-500/30', 'border-cyan-400', 'text-cyan-300');
-      this.dom.sandboxToggleBtn.classList.remove('bg-slate-800/60', 'border-slate-700', 'text-slate-300');
+      this.dom.sandboxToggleBtn.classList.add('bg-sky-500/20', 'border-sky-500/50', 'text-sky-300');
+      this.dom.sandboxToggleBtn.classList.remove('bg-slate-800/80', 'border-slate-700', 'text-slate-300');
     } else {
-      this.dom.sandboxToggleBtn.classList.remove('bg-cyan-500/30', 'border-cyan-400', 'text-cyan-300');
-      this.dom.sandboxToggleBtn.classList.add('bg-slate-800/60', 'border-slate-700', 'text-slate-300');
+      this.dom.sandboxToggleBtn.classList.remove('bg-sky-500/20', 'border-sky-500/50', 'text-sky-300');
+      this.dom.sandboxToggleBtn.classList.add('bg-slate-800/80', 'border-slate-700', 'text-slate-300');
     }
 
     this.renderLessonView();
@@ -797,13 +797,13 @@ class AppController {
       const modProgressPct = Math.round((modCompletedCount / mod.lessons.length) * 100);
 
       html += `
-        <div class="mb-4">
-          <div class="flex items-center justify-between px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <div class="mb-3.5">
+          <div class="flex items-center justify-between px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">
             <span class="flex items-center gap-2">
-              <i data-lucide="${mod.icon}" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <i data-lucide="${mod.icon}" class="w-3.5 h-3.5 text-sky-400"></i>
               ${mod.number}. ${mod.title}
             </span>
-            <span class="text-[11px] font-mono text-cyan-400/90">${modProgressPct}%</span>
+            <span class="text-[11px] font-mono text-slate-400">${modProgressPct}%</span>
           </div>
           <div class="space-y-1 mt-1 pl-1">
       `;
@@ -812,28 +812,28 @@ class AppController {
         const isCurrent = !this.state.isSandboxMode && lesson.id === this.state.currentLessonId;
         const isLessonDone = this.state.completedLessons.includes(lesson.id);
 
-        let itemClass = 'flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer group ';
+        let itemClass = 'flex items-center justify-between px-2.5 py-2 rounded-md text-xs transition-colors cursor-pointer group ';
         if (isCurrent) {
-          itemClass += 'bg-gradient-to-r from-cyan-500/20 to-violet-500/20 text-cyan-200 border border-cyan-500/40 shadow-sm ';
+          itemClass += 'bg-slate-800 text-sky-300 border-l-2 border-sky-400 font-semibold ';
         } else if (isLessonDone) {
-          itemClass += 'text-slate-300 hover:bg-slate-800/50 hover:text-white ';
+          itemClass += 'text-slate-300 hover:bg-slate-800/50 hover:text-white font-medium ';
         } else {
           itemClass += 'text-slate-400 hover:bg-slate-800/30 hover:text-slate-200 ';
         }
 
         html += `
           <div class="${itemClass}" onclick="window.antiGravityApp.selectLesson('${lesson.id}')">
-            <div class="flex items-center gap-2.5 truncate">
+            <div class="flex items-center gap-2 truncate">
               ${
                 isLessonDone
                   ? '<i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>'
                   : (isCurrent
-                      ? '<i data-lucide="disc" class="w-3.5 h-3.5 text-cyan-400 shrink-0 animate-spin"></i>'
+                      ? '<i data-lucide="circle-dot" class="w-3.5 h-3.5 text-sky-400 shrink-0"></i>'
                       : '<i data-lucide="circle" class="w-3.5 h-3.5 text-slate-600 shrink-0 group-hover:text-slate-400"></i>')
               }
               <span class="truncate">${lesson.title}</span>
             </div>
-            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 group-hover:text-cyan-300 shrink-0">
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 group-hover:text-sky-300 shrink-0">
               ${lesson.xp} XP
             </span>
           </div>
@@ -875,15 +875,15 @@ class AppController {
 
     // Update Header / Banner Info
     if (this.dom.moduleTitleEl) {
-      this.dom.moduleTitleEl.innerHTML = `<i data-lucide="${mod.icon}" class="w-3.5 h-3.5 text-cyan-400"></i> Module ${mod.number}: ${mod.title}`;
+      this.dom.moduleTitleEl.innerHTML = `<i data-lucide="${mod.icon}" class="w-3.5 h-3.5 text-sky-400"></i> Module ${mod.number}: ${mod.title}`;
     }
     if (this.dom.lessonTitleEl) this.dom.lessonTitleEl.textContent = lesson.title;
     if (this.dom.lessonSubtitleEl) this.dom.lessonSubtitleEl.textContent = lesson.subtitle;
     if (this.dom.lessonXpBadge) {
       this.dom.lessonXpBadge.textContent = `${lesson.xp} XP`;
       this.dom.lessonXpBadge.className = isCompleted
-        ? 'px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center gap-1.5'
-        : 'px-2.5 py-1 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5';
+        ? 'px-2.5 py-0.5 rounded text-xs font-mono font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800/60 flex items-center gap-1'
+        : 'px-2.5 py-0.5 rounded text-xs font-mono font-semibold bg-sky-950 text-sky-300 border border-sky-800/60 flex items-center gap-1';
     }
     if (this.dom.lessonStoryEl) this.dom.lessonStoryEl.textContent = lesson.story;
 
@@ -911,16 +911,16 @@ class AppController {
 
   renderSandboxView() {
     if (this.dom.moduleTitleEl) {
-      this.dom.moduleTitleEl.innerHTML = `<i data-lucide="orbit" class="w-3.5 h-3.5 text-cyan-400"></i> Free Practice Sandbox`;
+      this.dom.moduleTitleEl.innerHTML = `<i data-lucide="code-2" class="w-3.5 h-3.5 text-sky-400"></i> Free Practice Sandbox`;
     }
     if (this.dom.lessonTitleEl) this.dom.lessonTitleEl.textContent = 'Python Practice Sandbox';
     if (this.dom.lessonSubtitleEl) this.dom.lessonSubtitleEl.textContent = 'An open sandbox to write, run, and experiment with any Python code';
     if (this.dom.lessonXpBadge) {
       this.dom.lessonXpBadge.textContent = 'Open Practice';
-      this.dom.lessonXpBadge.className = 'px-2.5 py-1 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5';
+      this.dom.lessonXpBadge.className = 'px-2.5 py-0.5 rounded text-xs font-mono font-semibold bg-sky-950 text-sky-300 border border-sky-800/60 flex items-center gap-1';
     }
     if (this.dom.lessonStoryEl) {
-      this.dom.lessonStoryEl.textContent = 'Welcome to the open Python sandbox! Feel free to practice variables, loops, calculations, lists, dictionaries, or test your own custom Python scripts.';
+      this.dom.lessonStoryEl.textContent = 'Welcome to the Python sandbox! Write and experiment with variables, calculations, loops, data structures, and functions freely.';
     }
 
     // Load sandbox code
@@ -937,30 +937,30 @@ class AppController {
     const t = lesson.theory;
 
     let html = `
-      <div class="space-y-6">
+      <div class="space-y-4">
         <!-- Overview -->
-        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-300 leading-relaxed text-sm">
+        <div class="p-4 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-300 leading-relaxed text-xs sm:text-sm">
           ${t.overview.replace(/\n/g, '<br>')}
         </div>
 
         <!-- Sections -->
-        <div class="space-y-5">
+        <div class="space-y-4">
     `;
 
     t.sections.forEach((sec, idx) => {
       html += `
-        <div class="p-5 rounded-xl bg-slate-900/70 border border-indigo-900/30 glass-card-interactive">
-          <h4 class="text-base font-semibold text-cyan-300 mb-2 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+        <div class="card-panel p-4 sm:p-5 card-interactive">
+          <h4 class="text-xs sm:text-sm font-semibold text-white mb-2 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
             ${sec.title}
           </h4>
-          <p class="text-sm text-slate-300 mb-3 leading-relaxed">${sec.content}</p>
+          <p class="text-xs sm:text-sm text-slate-300 mb-3 leading-relaxed">${sec.content}</p>
           <div class="relative group">
-            <pre class="bg-slate-950 p-4 rounded-lg font-mono-code text-xs text-emerald-300 overflow-x-auto border border-slate-800"><code>${this.escapeHtml(sec.code)}</code></pre>
+            <pre class="bg-slate-950 p-3.5 rounded font-mono text-xs text-sky-200 overflow-x-auto border border-slate-800"><code>${this.escapeHtml(sec.code)}</code></pre>
             <button 
               onclick="window.antiGravityApp.loadSnippetToEditor(\`${this.escapeForSnippet(sec.code)}\`)"
-              class="absolute top-2 right-2 px-2.5 py-1 rounded bg-slate-800/80 hover:bg-cyan-500 text-slate-300 hover:text-slate-950 text-xs font-medium transition-all opacity-0 group-hover:opacity-100 flex items-center gap-1">
-              <i data-lucide="code" class="w-3 h-3"></i> Try In Editor
+              class="absolute top-2 right-2 px-2 py-1 rounded bg-slate-800 hover:bg-sky-600 text-slate-300 hover:text-white text-xs font-medium transition-all opacity-0 group-hover:opacity-100 flex items-center gap-1 shadow-sm">
+              <i data-lucide="play" class="w-3 h-3"></i> Try In Editor
             </button>
           </div>
         </div>
@@ -971,18 +971,18 @@ class AppController {
         </div>
 
         <!-- Syntax Breakdown Matrix -->
-        <div class="p-5 rounded-xl bg-gradient-to-br from-indigo-950/40 to-slate-900/70 border border-indigo-500/20">
-          <h4 class="text-xs uppercase tracking-wider font-semibold text-indigo-300 mb-3 flex items-center gap-1.5">
-            <i data-lucide="layers" class="w-4 h-4 text-indigo-400"></i>
-            Syntax Architecture
+        <div class="card-panel p-4 sm:p-5">
+          <h4 class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-2.5 flex items-center gap-1.5">
+            <i data-lucide="code-2" class="w-3.5 h-3.5 text-sky-400"></i>
+            Syntax Breakdown
           </h4>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
     `;
 
     t.syntaxTokens.forEach((item) => {
       html += `
-        <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800 flex flex-col justify-center">
-          <code class="text-xs font-mono text-cyan-300 font-semibold mb-1">${this.escapeHtml(item.token)}</code>
+        <div class="p-2.5 rounded bg-slate-900 border border-slate-800 flex flex-col justify-center">
+          <code class="text-xs font-mono text-sky-300 font-semibold mb-0.5">${this.escapeHtml(item.token)}</code>
           <span class="text-xs text-slate-400">${item.description}</span>
         </div>
       `;
@@ -992,11 +992,11 @@ class AppController {
           </div>
         </div>
 
-        <!-- Cosmic Tip -->
-        <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
-          <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+        <!-- Pro Tip -->
+        <div class="p-3.5 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-start gap-2.5">
+          <i data-lucide="info" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
           <div>
-            <h5 class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-1">Cosmic Pro Tip</h5>
+            <h5 class="text-xs font-semibold text-amber-300 mb-0.5">Pro Tip</h5>
             <p class="text-xs text-amber-200/90 leading-relaxed">${t.cosmicTip}</p>
           </div>
         </div>
@@ -1005,8 +1005,8 @@ class AppController {
         <div class="pt-2 flex justify-end">
           <button 
             onclick="window.antiGravityApp.switchTab('practice')"
-            class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-semibold text-sm transition-all flex items-center gap-2 shadow-lg shadow-cyan-500/20">
-            <span>Proceed to Practice Flight</span>
+            class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs sm:text-sm transition-colors flex items-center gap-1.5 shadow-sm">
+            <span>Proceed to Exercises</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
         </div>
@@ -1025,10 +1025,10 @@ class AppController {
       lesson.practice.checklist.forEach((item, idx) => {
         chkHtml += `
           <div class="flex items-start gap-2.5 text-xs text-slate-300">
-            <span class="w-4 h-4 rounded-full bg-cyan-950 border border-cyan-500/50 text-cyan-400 flex items-center justify-center font-mono text-[10px] shrink-0 mt-0.5">
+            <span class="w-4 h-4 rounded bg-slate-800 text-sky-400 border border-slate-700 flex items-center justify-center font-mono text-[10px] shrink-0 mt-0.5 font-medium">
               ${idx + 1}
             </span>
-            <span>${item}</span>
+            <span class="leading-relaxed">${item}</span>
           </div>
         `;
       });
@@ -1167,13 +1167,13 @@ class AppController {
 
   displayTerminalOutput(stdout, execTime, engine) {
     const timestamp = new Date().toLocaleTimeString();
-    let content = `<div class="text-xs text-slate-500 mb-2 font-mono">[${timestamp}] Executed via ${engine} in ${execTime}ms</div>`;
+    let content = `<div class="text-[11px] text-slate-500 mb-2 font-mono">[${timestamp}] ${engine} (${execTime}ms)</div>`;
 
     if (!stdout || !stdout.trim()) {
-      content += `<div class="text-slate-400 italic font-mono">&lt;Process finished with return code 0 (no stdout output)&gt;</div>`;
+      content += `<div class="text-slate-400 italic font-mono">&lt;Process finished with return code 0 (no output)&gt;</div>`;
     } else {
       const escaped = this.escapeHtml(stdout);
-      content += `<div class="text-cyan-300 font-mono whitespace-pre-wrap leading-relaxed">${escaped}</div>`;
+      content += `<div class="text-slate-100 font-mono whitespace-pre-wrap leading-relaxed">${escaped}</div>`;
     }
 
     this.dom.terminalOutput.innerHTML = content;
@@ -1182,14 +1182,14 @@ class AppController {
 
   displayTerminalSuccess(stdout, message, execTime) {
     const timestamp = new Date().toLocaleTimeString();
-    let content = `<div class="text-xs text-slate-500 mb-2 font-mono">[${timestamp}] All unit checks validated in ${execTime}ms</div>`;
+    let content = `<div class="text-[11px] text-slate-500 mb-2 font-mono">[${timestamp}] All unit checks validated in ${execTime}ms</div>`;
 
     if (stdout && stdout.trim()) {
-      content += `<div class="text-cyan-200 font-mono whitespace-pre-wrap mb-3">${this.escapeHtml(stdout)}</div>`;
+      content += `<div class="text-slate-100 font-mono whitespace-pre-wrap mb-2.5">${this.escapeHtml(stdout)}</div>`;
     }
 
     content += `
-      <div class="p-3 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-mono flex items-center gap-2">
+      <div class="p-2.5 rounded bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-mono flex items-center gap-2">
         <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i>
         <span>${message}</span>
       </div>
@@ -1203,9 +1203,9 @@ class AppController {
   displayTerminalError(error, execTime, engine) {
     const timestamp = new Date().toLocaleTimeString();
     let content = `
-      <div class="text-xs text-slate-500 mb-2 font-mono">[${timestamp}] Exception encountered (${engine}) in ${execTime}ms</div>
-      <div class="p-3 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs font-mono leading-relaxed whitespace-pre-wrap">
-<i data-lucide="alert-octagon" class="w-4 h-4 text-rose-400 inline mr-1.5 align-middle"></i>${this.escapeHtml(error)}
+      <div class="text-[11px] text-slate-500 mb-2 font-mono">[${timestamp}] Exception encountered (${engine}) in ${execTime}ms</div>
+      <div class="p-2.5 rounded bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs font-mono leading-relaxed whitespace-pre-wrap">
+        <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-rose-400 inline mr-1 align-text-bottom"></i>${this.escapeHtml(error)}
       </div>
     `;
 
@@ -1216,15 +1216,15 @@ class AppController {
 
   displayTerminalWarning(stdout, message, execTime) {
     const timestamp = new Date().toLocaleTimeString();
-    let content = `<div class="text-xs text-slate-500 mb-2 font-mono">[${timestamp}] Process output did not match mission telemetry in ${execTime}ms</div>`;
+    let content = `<div class="text-[11px] text-slate-500 mb-2 font-mono">[${timestamp}] Output did not match expected solution in ${execTime}ms</div>`;
 
     if (stdout && stdout.trim()) {
-      content += `<div class="text-cyan-300 font-mono whitespace-pre-wrap mb-2">${this.escapeHtml(stdout)}</div>`;
+      content += `<div class="text-slate-200 font-mono whitespace-pre-wrap mb-2">${this.escapeHtml(stdout)}</div>`;
     }
 
     content += `
-      <div class="p-3 rounded-lg bg-amber-950/60 border border-amber-500/40 text-amber-300 text-xs font-mono flex items-start gap-2">
-        <i data-lucide="info" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+      <div class="p-2.5 rounded bg-amber-950/50 border border-amber-500/40 text-amber-300 text-xs font-mono flex items-start gap-2">
+        <i data-lucide="info" class="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5"></i>
         <div>
           <strong class="block text-amber-200">Objective Incomplete:</strong>
           <span>${message}</span>
@@ -1238,7 +1238,7 @@ class AppController {
   }
 
   clearTerminal() {
-    this.dom.terminalOutput.innerHTML = `<span class="text-slate-600 font-mono text-xs">Terminal ready for anti-gravity telemetry.</span>`;
+    this.dom.terminalOutput.innerHTML = `<span class="text-slate-500 font-mono text-xs">Ready. Output will appear here after running code.</span>`;
     this.setTerminalStatus('idle');
     if (this.dom.terminalExecTime) this.dom.terminalExecTime.textContent = '0ms';
   }
@@ -1247,15 +1247,15 @@ class AppController {
     if (!this.dom.terminalStatus) return;
     const chips = {
       idle: { text: 'IDLE', color: 'bg-slate-800 text-slate-400 border-slate-700' },
-      executing: { text: 'EXECUTING...', color: 'bg-cyan-950 text-cyan-300 border-cyan-500 animate-pulse' },
-      success: { text: 'SUCCESS', color: 'bg-emerald-950 text-emerald-300 border-emerald-500' },
-      passed: { text: 'PASSED', color: 'bg-emerald-950 text-emerald-300 border-emerald-500 glow-box-cyan' },
-      error: { text: 'ERROR', color: 'bg-rose-950 text-rose-300 border-rose-500' },
-      failed: { text: 'CHECK FAILED', color: 'bg-amber-950 text-amber-300 border-amber-500' }
+      executing: { text: 'RUNNING', color: 'bg-sky-950 text-sky-300 border-sky-700 animate-pulse' },
+      success: { text: 'SUCCESS', color: 'bg-emerald-950 text-emerald-300 border-emerald-700' },
+      passed: { text: 'PASSED', color: 'bg-emerald-950 text-emerald-300 border-emerald-700' },
+      error: { text: 'ERROR', color: 'bg-rose-950 text-rose-300 border-rose-700' },
+      failed: { text: 'FAILED', color: 'bg-amber-950 text-amber-300 border-amber-700' }
     };
     const c = chips[status] || chips.idle;
     this.dom.terminalStatus.textContent = c.text;
-    this.dom.terminalStatus.className = `text-[10px] font-mono px-2 py-0.5 rounded border uppercase tracking-wider ${c.color}`;
+    this.dom.terminalStatus.className = `text-[10px] font-mono px-2 py-0.5 rounded border uppercase ${c.color}`;
   }
 
   // ==========================================================================
@@ -1277,15 +1277,15 @@ class AppController {
     // Context-sensitive diagnosis
     let diagnosis = '';
     if (!code.trim()) {
-      diagnosis = `Greetings, Pilot! Your editor is currently vacuum-empty. Let's start by writing your first instruction as described in the mission checklist.`;
+      diagnosis = `Your code editor is empty. Read the learning objectives above and start by typing your solution.`;
     } else if (code.includes('print(') && !code.includes(')')) {
-      diagnosis = `A.N.T.I. Alert: You opened a \`print(\` statement but forgot the closing parenthesis \`)\`! Make sure all brackets come in balanced pairs.`;
+      diagnosis = `Syntax Notice: You opened a print( statement without a closing parenthesis ). Remember that all brackets must be closed in pairs.`;
     } else if (code.includes('"') && (code.match(/"/g) || []).length % 2 !== 0) {
-      diagnosis = `A.N.T.I. Alert: Unclosed quotation mark detected. Every opening quote \`"\` requires a matching closing quote.`;
+      diagnosis = `Syntax Notice: Unclosed quotation mark detected. Every opening quote requires a matching closing quote.`;
     } else if (/(if|elif|else|for|while|def)\b/.test(code) && !code.includes(':')) {
-      diagnosis = `A.N.T.I. Syntax Rule: Python compound statements (like \`if\`, \`for\`, or \`def\`) MUST conclude with a colon \`:\` before the indented block.`;
+      diagnosis = `Syntax Notice: Python compound statements (if, elif, else, for, while) must conclude with a colon (:) before indented lines.`;
     } else {
-      diagnosis = `I am analyzing your current code telemetry against the flight plan. Here is a navigational hint:`;
+      diagnosis = `Review the expected output and checklist. Here is a hint to guide your implementation:`;
     }
 
     this.dom.mentorMessage.textContent = diagnosis;
@@ -1299,7 +1299,7 @@ class AppController {
   showMentorFeedback(feedback) {
     if (!this.dom.mentorContainer) return;
     this.dom.mentorContainer.classList.remove('hidden');
-    this.dom.mentorMessage.textContent = `A.N.T.I. Telemetry: ${feedback}`;
+    this.dom.mentorMessage.textContent = `Hint: ${feedback}`;
   }
 
   revealNextHint() {
@@ -1310,9 +1310,9 @@ class AppController {
     if (currentLvl < hints.length) {
       const hint = hints[currentLvl];
       const hintCard = document.createElement('div');
-      hintCard.className = 'p-3 rounded-lg bg-slate-950/80 border border-cyan-500/30 text-xs text-slate-300 leading-relaxed';
+      hintCard.className = 'p-3 rounded-lg bg-slate-900 border border-slate-700/80 text-xs text-slate-300 leading-relaxed';
       hintCard.innerHTML = `
-        <div class="flex items-center gap-1.5 text-cyan-400 font-semibold mb-1">
+        <div class="flex items-center gap-1.5 text-amber-400 font-semibold mb-1">
           <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
           <span>Hint ${hint.level}: ${hint.title}</span>
         </div>
@@ -1350,24 +1350,24 @@ class AppController {
 
   showBadgeToast(badge) {
     const toast = document.createElement('div');
-    toast.className = 'fixed bottom-6 right-6 z-50 p-4 rounded-xl glass-panel-cyan border border-cyan-400 flex items-center gap-3 shadow-2xl animate-levitate';
+    toast.className = 'fixed bottom-5 right-5 z-50 p-3.5 rounded-lg bg-[#0d121f] border border-slate-700 flex items-center gap-3 shadow-xl transition-all duration-300';
     toast.innerHTML = `
-      <div class="w-10 h-10 rounded-lg bg-gradient-to-br ${badge.color} flex items-center justify-center text-slate-950 shadow-md">
-        <i data-lucide="${badge.icon}" class="w-5 h-5"></i>
+      <div class="w-9 h-9 rounded-md bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+        <i data-lucide="${badge.icon}" class="w-4 h-4"></i>
       </div>
       <div>
-        <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400 block">Achievement Unlocked!</span>
-        <strong class="text-sm text-white block">${badge.name}</strong>
-        <span class="text-xs text-slate-300">${badge.description}</span>
+        <span class="text-[10px] font-semibold uppercase tracking-wider text-amber-400 block">Achievement Unlocked</span>
+        <strong class="text-xs font-semibold text-white block">${badge.name}</strong>
+        <span class="text-[11px] text-slate-400">${badge.description}</span>
       </div>
     `;
     document.body.appendChild(toast);
     if (window.lucide) window.lucide.createIcons();
 
     setTimeout(() => {
-      toast.classList.add('opacity-0', 'transition-opacity', 'duration-500');
-      setTimeout(() => toast.remove(), 500);
-    }, 4500);
+      toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+      setTimeout(() => toast.remove(), 300);
+    }, 4000);
   }
 
   openSuccessModal(lesson, validationMsg) {
@@ -1404,7 +1404,7 @@ class AppController {
       this.selectLesson(nextLesson.id);
     } else {
       // Completed all lessons!
-      alert('Congratulations, Commander! You have successfully completed all missions in Anti-Gravity Python!');
+      alert('Congratulations! You have completed all lessons in Python Foundation!');
     }
   }
 
@@ -1430,25 +1430,25 @@ class AppController {
     BADGES.forEach((b) => {
       const unlocked = this.state.unlockedBadges.includes(b.id);
       html += `
-        <div class="p-4 rounded-xl border transition-all ${
+        <div class="p-3.5 rounded-lg border transition-all ${
           unlocked
-            ? 'bg-slate-900/80 border-cyan-500/40 shadow-lg shadow-cyan-500/10'
-            : 'bg-slate-950/40 border-slate-800 opacity-50'
+            ? 'bg-slate-900 border-slate-700 shadow-sm'
+            : 'bg-slate-950/60 border-slate-800/80 opacity-40'
         }">
-          <div class="flex items-center gap-3 mb-2">
-            <div class="w-10 h-10 rounded-lg flex items-center justify-center ${
-              unlocked ? `bg-gradient-to-br ${b.color} text-slate-950` : 'bg-slate-800 text-slate-500'
+          <div class="flex items-center gap-2.5 mb-1.5">
+            <div class="w-8 h-8 rounded-md flex items-center justify-center ${
+              unlocked ? `bg-amber-500/20 text-amber-400` : 'bg-slate-800 text-slate-500'
             }">
-              <i data-lucide="${b.icon}" class="w-5 h-5"></i>
+              <i data-lucide="${b.icon}" class="w-4 h-4"></i>
             </div>
             <div>
-              <h5 class="text-sm font-bold ${unlocked ? 'text-white' : 'text-slate-400'}">${b.name}</h5>
+              <h5 class="text-xs font-semibold ${unlocked ? 'text-white' : 'text-slate-400'}">${b.name}</h5>
               <span class="text-[10px] font-mono uppercase tracking-wider ${unlocked ? 'text-emerald-400' : 'text-slate-500'}">
                 ${unlocked ? 'UNLOCKED' : 'LOCKED'}
               </span>
             </div>
           </div>
-          <p class="text-xs text-slate-400">${b.description}</p>
+          <p class="text-[11px] text-slate-400">${b.description}</p>
         </div>
       `;
     });

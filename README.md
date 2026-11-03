@@ -1,8 +1,8 @@
-# 🌌 Anti-Gravity Python
+# 🐍 Anti-Gravity Python
 
-A professional, interactive, beginner-friendly single-page web application for learning Python from scratch with zero backend setup.
+A professional, interactive, beginner-friendly web application for learning Python from scratch with zero backend setup.
 
-Aligned with university foundation syllabi (including CCBP & DY Patil University curriculum):
+Aligned with foundational university computer science curriculum:
 1. **Introduction to Python & Sequence of Instructions**
 2. **Type Conversions & Arithmetic Operators**
 3. **Conditional Statements (Decision Making)**
@@ -51,9 +51,10 @@ Aligned with university foundation syllabi (including CCBP & DY Patil University
 
 ## 🌟 Key Application Features
 
-- **Dual-Engine Execution**: Instant 0ms Quantum Local VM + CPython 3.12 WebAssembly (Pyodide).
-- **Professional Code Editor**: Line numbers gutter, Tab key indentation (4 spaces), smart Enter auto-indent, character counter, and reset to template.
-- **Cyber Terminal**: Output console with execution timers (in ms), status chips (`IDLE`, `RUNNING`, `PASSED`, `ERROR`), clear and copy buttons.
-- **A.N.T.I. - AI Python Mentor & Tutor**: Context-aware error diagnoses and 3-tiered progressive hints.
-- **Gamification**: Ranks (Python Beginner → Python Explorer → Logic Master → Data Architect → Python Pro), progress tracking, confetti celebrations, synthetic Web Audio sound effects, and 8 achievement badges.
-- **LocalStorage Sync**: Saves your progress, completed checklist items, and code drafts across refreshes.
+- **Dual-Engine Execution**: Instant 0ms Local JavaScript VM + full CPython 3.12 WebAssembly (Pyodide).
+- **Professional Code Editor**: Styled after VS Code Dark Obsidian theme with gutter line numbers, 4-space Tab key indentation, automatic colon indent, character counter, and starter template resets.
+- **Mobile Touch Toolbar**: Floating quick-key bar (`Tab`, `:`, `( )`, `[ ]`, `{ }`, `" "`, `' '`, `=`, `+`, `#`) for fast, hassle-free coding on mobile devices.
+- **Developer Console**: Live execution diagnostics (in ms), status pills (`IDLE`, `RUNNING`, `PASSED`, `ERROR`), clear and copy buttons.
+- **Guidance & Hint System**: Context-sensitive syntax checks and multi-tiered hints to help learners resolve errors without giving away the full answer immediately.
+- **Interactive Progress & Badges**: Milestone tracking (Beginner → Explorer → Logic Master → Data Architect → Python Pro), celebration feedback, Web Audio sound effects, and unlockable achievement medals.
+- **LocalStorage Persistence**: Automatically saves your code drafts, lesson completions, and earned XP locally in your browser.
