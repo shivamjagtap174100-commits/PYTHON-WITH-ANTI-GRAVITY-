@@ -339,6 +339,7 @@ const DEFAULT_STATE = {
   activeTab: 'theory', // 'theory' | 'practice'
   completedLessons: [],
   completedQuizzes: [],
+  completedQuizQuestions: {}, // key: `${lessonId}_q${idx}`: true
   userCode: {},
   totalXp: 0,
   unlockedBadges: [],
@@ -372,6 +373,7 @@ for i in range(1, 4):
 class AppController {
   constructor() {
     this.state = this.loadState();
+    this.currentQuizIndex = 0;
     sounds.enabled = this.state.soundEnabled;
 
     this.confetti = null;
@@ -388,12 +390,39 @@ class AppController {
       if (saved) {
         const parsed = Object.assign({}, DEFAULT_STATE, JSON.parse(saved));
         parsed.completedQuizzes = parsed.completedQuizzes || [];
+        parsed.completedQuizQuestions = parsed.completedQuizQuestions || {};
         return parsed;
       }
     } catch (e) {
       console.warn('Could not read from localStorage:', e);
     }
     return Object.assign({}, DEFAULT_STATE);
+  }
+
+  triggerXpGainAnimation(amount) {
+    const xpEl = document.getElementById('header-total-xp');
+    if (!xpEl) return;
+    
+    const badge = document.createElement('div');
+    badge.textContent = `+${amount} XP!`;
+    badge.className = 'fixed z-50 text-xs font-bold font-mono px-2 py-0.5 rounded-md bg-amber-500 text-white shadow-md pointer-events-none transition-all duration-700 ease-out';
+    
+    const rect = xpEl.getBoundingClientRect();
+    badge.style.top = `${Math.max(10, rect.top - 10)}px`;
+    badge.style.left = `${Math.max(10, rect.left)}px`;
+    badge.style.opacity = '1';
+    badge.style.transform = 'translateY(0) scale(1)';
+    
+    document.body.appendChild(badge);
+    
+    requestAnimationFrame(() => {
+      badge.style.transform = 'translateY(-22px) scale(1.15)';
+      badge.style.opacity = '0';
+    });
+    
+    setTimeout(() => {
+      if (badge.parentNode) badge.parentNode.removeChild(badge);
+    }, 750);
   }
 
   saveState() {
@@ -769,6 +798,7 @@ class AppController {
 
   selectLesson(lessonId) {
     sounds.playChirp();
+    this.currentQuizIndex = 0;
     this.state.isSandboxMode = false;
     this.state.currentLessonId = lessonId;
     this.state.mentorRevealedLevel = 0;
@@ -866,8 +896,14 @@ class AppController {
 
   renderHeaderStats() {
     const totalLessons = CURRICULUM.reduce((sum, m) => sum + m.lessons.length, 0);
-    const completedCount = this.state.completedLessons.length;
-    const progressPct = Math.round((completedCount / totalLessons) * 100);
+    const totalQuizzes = CURRICULUM.reduce((sum, m) => sum + m.lessons.reduce((qSum, l) => qSum + ((l.quizzes && l.quizzes.length) || 1), 0), 0);
+    const totalMilestones = totalLessons + totalQuizzes; // 12 lessons + 60 quizzes = 72 milestones
+
+    const completedLessonCount = (this.state.completedLessons || []).length;
+    const completedQuizCount = Object.keys(this.state.completedQuizQuestions || {}).length;
+    const completedMilestones = completedLessonCount + completedQuizCount;
+
+    const progressPct = Math.min(100, Math.round((completedMilestones / totalMilestones) * 100));
 
     if (this.dom.totalXpEl) this.dom.totalXpEl.textContent = `${this.state.totalXp} XP`;
     if (this.dom.rankTitleEl) this.dom.rankTitleEl.textContent = this.getRank(this.state.totalXp);
@@ -957,6 +993,9 @@ class AppController {
           ${t.overview.replace(/\n/g, '<br>')}
         </div>
 
+        <!-- Visual Concept Flowchart / Architecture Diagram -->
+        ${this.renderDiagramSection(lesson)}
+
         <!-- Sections -->
         <div class="space-y-4">
     `;
@@ -1015,7 +1054,7 @@ class AppController {
           </div>
         </div>
 
-        <!-- Concept Check Quiz Section -->
+        <!-- Interactive Concept Quizzes Section (5 Questions) -->
         ${this.renderQuizSection(lesson)}
 
         <!-- Call to action button -->
@@ -1033,18 +1072,99 @@ class AppController {
     this.dom.theoryContent.innerHTML = html;
   }
 
+  renderDiagramSection(lesson) {
+    if (!lesson.diagram) return '';
+    const d = lesson.diagram;
+    return `
+      <!-- Visual Architecture & Concept Flowchart -->
+      <div class="card-panel p-4 sm:p-5 bg-white border border-slate-200 shadow-xs">
+        <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-700">
+              <i data-lucide="git-branch" class="w-3.5 h-3.5"></i>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-slate-900">${this.escapeHtml(d.title || 'Concept Flowchart & Architecture')}</h4>
+              <span class="text-[11px] text-slate-500">Visual mental model of how this concept works</span>
+            </div>
+          </div>
+          <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200 font-semibold">
+            ${this.escapeHtml(d.badge || 'Flow Diagram')}
+          </span>
+        </div>
+        <div class="mt-2 text-slate-800 overflow-x-auto">
+          ${d.html}
+        </div>
+      </div>
+    `;
+  }
+
   renderQuizSection(lesson) {
-    if (!lesson.quiz) return '';
-    const q = lesson.quiz;
-    const isCompleted = (this.state.completedQuizzes || []).includes(lesson.id);
+    return `
+      <div id="quiz-block" class="card-panel p-5 sm:p-6 bg-white border border-slate-200 shadow-xs">
+        <div id="quiz-section-wrapper">
+          ${this.renderQuizContent(lesson)}
+        </div>
+      </div>
+    `;
+  }
+
+  renderQuizContent(lesson) {
+    const quizzes = lesson.quizzes || (lesson.quiz ? [lesson.quiz] : []);
+    if (!quizzes.length) return '<p class="text-xs text-slate-500">No quizzes available for this topic.</p>';
+
+    let currentIdx = this.currentQuizIndex || 0;
+    if (currentIdx >= quizzes.length) currentIdx = 0;
+    this.currentQuizIndex = currentIdx;
+
+    const q = quizzes[currentIdx];
     const letters = ['A', 'B', 'C', 'D'];
 
+    // Count how many questions answered in this lesson
+    let answeredCount = 0;
+    quizzes.forEach((_, i) => {
+      if (this.state.completedQuizQuestions && this.state.completedQuizQuestions[`${lesson.id}_q${i}`]) {
+        answeredCount++;
+      }
+    });
+
+    const isCurrentAnswered = !!(this.state.completedQuizQuestions && this.state.completedQuizQuestions[`${lesson.id}_q${currentIdx}`]);
+    const allCompleted = answeredCount === quizzes.length;
+
+    // Build Step Pills (Q1, Q2, Q3, Q4, Q5)
+    let pillsHtml = '';
+    quizzes.forEach((_, idx) => {
+      const isQAnswered = !!(this.state.completedQuizQuestions && this.state.completedQuizQuestions[`${lesson.id}_q${idx}`]);
+      const isQActive = idx === currentIdx;
+
+      let pillClass = 'px-2.5 py-1 rounded text-xs font-mono font-medium transition-all flex items-center gap-1 cursor-pointer ';
+      if (isQActive) {
+        pillClass += 'bg-sky-600 text-white shadow-xs font-semibold';
+      } else if (isQAnswered) {
+        pillClass += 'bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 font-semibold';
+      } else {
+        pillClass += 'bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200';
+      }
+
+      pillsHtml += `
+        <button 
+          type="button" 
+          onclick="window.antiGravityApp.setQuizStep(${idx})"
+          class="${pillClass}"
+          title="Question ${idx + 1}">
+          ${isQAnswered ? '<i data-lucide="check" class="w-3 h-3 text-emerald-600"></i>' : ''}
+          <span>Q${idx + 1}</span>
+        </button>
+      `;
+    });
+
+    // Build Options
     let optionsHtml = '';
-    q.options.forEach((opt, idx) => {
-      const isCorrect = idx === q.correctIndex;
+    q.options.forEach((opt, optIdx) => {
+      const isCorrect = optIdx === q.correctIndex;
       let btnClass = 'w-full text-left p-3.5 rounded-lg border transition-all flex items-center justify-between group ';
 
-      if (isCompleted) {
+      if (isCurrentAnswered) {
         if (isCorrect) {
           btnClass += 'bg-emerald-50 border-emerald-400 text-emerald-950 font-semibold shadow-xs';
         } else {
@@ -1057,137 +1177,159 @@ class AppController {
       optionsHtml += `
         <button 
           type="button" 
-          id="quiz-opt-${idx}"
-          ${isCompleted ? 'disabled' : ''}
-          onclick="window.antiGravityApp.handleQuizAnswer('${lesson.id}', ${idx})"
+          id="quiz-opt-${optIdx}"
+          ${isCurrentAnswered ? 'disabled' : ''}
+          onclick="window.antiGravityApp.handleQuizAnswer('${lesson.id}', ${currentIdx}, ${optIdx})"
           class="${btnClass}">
           <div class="flex items-center gap-3">
-            <span class="w-6 h-6 rounded-md ${isCompleted && isCorrect ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-700 group-hover:bg-sky-100 group-hover:text-sky-700'} flex items-center justify-center font-mono text-xs font-bold shrink-0">
-              ${letters[idx]}
+            <span class="w-6 h-6 rounded-md ${isCurrentAnswered && isCorrect ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-700 group-hover:bg-sky-100 group-hover:text-sky-700'} flex items-center justify-center font-mono text-xs font-bold shrink-0">
+              ${letters[optIdx]}
             </span>
             <span class="text-xs sm:text-sm">${this.escapeHtml(opt)}</span>
           </div>
-          <span id="quiz-opt-icon-${idx}">
-            ${isCompleted && isCorrect ? '<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>' : ''}
+          <span id="quiz-opt-icon-${optIdx}">
+            ${isCurrentAnswered && isCorrect ? '<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>' : ''}
           </span>
         </button>
       `;
     });
 
+    // Feedback
     let feedbackHtml = '';
-    if (isCompleted) {
+    if (isCurrentAnswered) {
+      const hasNext = currentIdx < quizzes.length - 1;
       feedbackHtml = `
-        <div class="p-3.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 mt-3 flex items-start gap-2.5">
-          <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
-          <div>
-            <strong class="text-xs font-bold block text-emerald-900">Correct! (+25 XP Earned)</strong>
-            <p class="text-xs text-emerald-800 leading-relaxed mt-0.5">${this.escapeHtml(q.explanation)}</p>
+        <div class="p-3.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 mt-3 flex flex-col gap-2.5">
+          <div class="flex items-start gap-2.5">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+            <div>
+              <strong class="text-xs font-bold block text-emerald-900">Correct! (+15 XP Earned)</strong>
+              <p class="text-xs text-emerald-800 leading-relaxed mt-0.5">${this.escapeHtml(q.explanation)}</p>
+            </div>
+          </div>
+          <div class="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-emerald-200/60">
+            <span class="text-[11px] text-emerald-800 font-medium">Question ${currentIdx + 1} of ${quizzes.length} answered</span>
+            ${hasNext ? `
+              <button 
+                type="button"
+                onclick="window.antiGravityApp.setQuizStep(${currentIdx + 1})" 
+                class="px-3.5 py-1.5 rounded-md bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs transition-colors flex items-center gap-1.5 shadow-xs">
+                <span>Next Question (Q${currentIdx + 2})</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            ` : `
+              <button 
+                type="button"
+                onclick="window.antiGravityApp.switchTab('practice')" 
+                class="px-3.5 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs transition-colors flex items-center gap-1.5 shadow-xs">
+                <span>All 5 Questions Done! Start Practice</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            `}
           </div>
         </div>
       `;
     }
 
     return `
-      <div id="quiz-block" class="card-panel p-5 sm:p-6 bg-white border border-slate-200 shadow-xs">
-        <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-100">
-          <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-md bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-700">
-              <i data-lucide="help-circle" class="w-4 h-4"></i>
-            </div>
-            <div>
-              <h4 class="text-xs sm:text-sm font-bold text-slate-900">Concept Check Quiz</h4>
-              <span class="text-[11px] text-slate-500">Test what you learned before starting the exercise</span>
-            </div>
+      <!-- Header with title & overall topic quiz status -->
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-md bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-700">
+            <i data-lucide="help-circle" class="w-4 h-4"></i>
           </div>
-          <span id="quiz-badge-${lesson.id}" class="text-[11px] font-mono px-2 py-0.5 rounded ${isCompleted ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold' : 'bg-slate-100 text-slate-600 border border-slate-200'}">
-            ${isCompleted ? '✓ Completed (+25 XP)' : 'Question 1 of 1 · +25 XP'}
+          <div>
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900">Interactive Concept Quizzes</h4>
+            <span class="text-[11px] text-slate-500">5 questions covering all concepts learned in this topic</span>
+          </div>
+        </div>
+        <span class="text-[11px] font-mono px-2.5 py-1 rounded ${allCompleted ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold' : 'bg-slate-100 text-slate-700 border border-slate-200 font-medium'}">
+          ${allCompleted ? '✓ Topic Quizzes Complete (+75 XP)' : `${answeredCount}/${quizzes.length} Answered (+${answeredCount * 15} XP)`}
+        </span>
+      </div>
+
+      <!-- Question Stepper Pills (Q1 .. Q5) -->
+      <div class="flex flex-wrap items-center gap-1.5 mb-4">
+        <span class="text-xs font-semibold text-slate-500 mr-1">Questions:</span>
+        ${pillsHtml}
+      </div>
+
+      <!-- Current Question Text -->
+      <div class="mb-3.5 p-3 rounded-lg bg-slate-50 border border-slate-200">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-[11px] font-semibold text-sky-700 uppercase tracking-wider font-mono">Question ${currentIdx + 1} of ${quizzes.length}</span>
+          <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded ${isCurrentAnswered ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+            ${isCurrentAnswered ? 'Answered (+15 XP)' : '+15 XP'}
           </span>
         </div>
+        <p class="text-xs sm:text-sm font-bold text-slate-900 leading-relaxed">${this.escapeHtml(q.question)}</p>
+      </div>
 
-        <div class="mb-3.5">
-          <p class="text-[11px] font-semibold text-sky-700 uppercase tracking-wider mb-1 font-mono">Question:</p>
-          <p class="text-xs sm:text-sm font-bold text-slate-900 leading-relaxed">${this.escapeHtml(q.question)}</p>
-        </div>
+      <!-- Options Container -->
+      <div class="space-y-2 mb-3">
+        ${optionsHtml}
+      </div>
 
-        <!-- Options Container -->
-        <div class="space-y-2 mb-3">
-          ${optionsHtml}
-        </div>
-
-        <!-- Feedback Container -->
-        <div id="quiz-feedback-container">
-          ${feedbackHtml}
-        </div>
+      <!-- Feedback Container -->
+      <div id="quiz-feedback-container">
+        ${feedbackHtml}
       </div>
     `;
   }
 
-  handleQuizAnswer(lessonId, selectedIdx) {
+  setQuizStep(idx) {
+    this.currentQuizIndex = idx;
+    const lesson = this.getCurrentLesson();
+    const container = document.getElementById('quiz-section-wrapper');
+    if (container) {
+      container.innerHTML = this.renderQuizContent(lesson);
+      if (window.lucide) window.lucide.createIcons();
+    }
+  }
+
+  handleQuizAnswer(lessonId, questionIdx, selectedIdx) {
     const lesson = CURRICULUM.flatMap(m => m.lessons).find(l => l.id === lessonId);
-    if (!lesson || !lesson.quiz) return;
-    const q = lesson.quiz;
+    if (!lesson) return;
+    const quizzes = lesson.quizzes || (lesson.quiz ? [lesson.quiz] : []);
+    const q = quizzes[questionIdx];
+    if (!q) return;
 
     const optBtn = document.getElementById(`quiz-opt-${selectedIdx}`);
     const optIcon = document.getElementById(`quiz-opt-icon-${selectedIdx}`);
     const feedbackEl = document.getElementById('quiz-feedback-container');
-    const badgeEl = document.getElementById(`quiz-badge-${lesson.id}`);
 
     if (selectedIdx === q.correctIndex) {
       // CORRECT!
       sounds.playSuccessChime();
-      const firstTime = !(this.state.completedQuizzes || []).includes(lesson.id);
+      const qKey = `${lessonId}_q${questionIdx}`;
+      const firstTime = !(this.state.completedQuizQuestions && this.state.completedQuizQuestions[qKey]);
+
       if (firstTime) {
-        if (!this.state.completedQuizzes) this.state.completedQuizzes = [];
-        this.state.completedQuizzes.push(lesson.id);
-        this.state.totalXp += 25;
+        if (!this.state.completedQuizQuestions) this.state.completedQuizQuestions = {};
+        this.state.completedQuizQuestions[qKey] = true;
+        this.state.totalXp += 15;
+
+        // Check if all questions in this lesson are completed
+        const allAnswered = quizzes.every((_, i) => !!this.state.completedQuizQuestions[`${lessonId}_q${i}`]);
+        if (allAnswered) {
+          if (!this.state.completedQuizzes) this.state.completedQuizzes = [];
+          if (!this.state.completedQuizzes.includes(lessonId)) {
+            this.state.completedQuizzes.push(lessonId);
+          }
+        }
+
         this.saveState();
+        this.triggerXpGainAnimation(15);
         this.renderHeaderStats();
         this.checkAndAwardBadges();
       }
 
-      // Update badge
-      if (badgeEl) {
-        badgeEl.textContent = '✓ Completed (+25 XP)';
-        badgeEl.className = 'text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold';
+      // Re-render quiz wrapper content smoothly to show full updated state and Next button
+      const container = document.getElementById('quiz-section-wrapper');
+      if (container) {
+        container.innerHTML = this.renderQuizContent(lesson);
+        if (window.lucide) window.lucide.createIcons();
       }
-
-      // Mark all options
-      q.options.forEach((_, idx) => {
-        const b = document.getElementById(`quiz-opt-${idx}`);
-        const ic = document.getElementById(`quiz-opt-icon-${idx}`);
-        if (!b) return;
-        b.disabled = true;
-        if (idx === q.correctIndex) {
-          b.className = 'w-full text-left p-3.5 rounded-lg border transition-all flex items-center justify-between bg-emerald-50 border-emerald-400 text-emerald-950 font-semibold shadow-xs';
-          if (ic) ic.innerHTML = '<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>';
-        } else {
-          b.className = 'w-full text-left p-3.5 rounded-lg border transition-all flex items-center justify-between bg-slate-50 border-slate-200 text-slate-400 opacity-60 cursor-default';
-          if (ic) ic.innerHTML = '';
-        }
-      });
-
-      // Show Feedback with direct button to exercises
-      if (feedbackEl) {
-        feedbackEl.innerHTML = `
-          <div class="p-3.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 mt-3 flex flex-col gap-2.5">
-            <div class="flex items-start gap-2.5">
-              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
-              <div>
-                <strong class="text-xs font-bold block text-emerald-900">Correct! (+25 XP)</strong>
-                <p class="text-xs text-emerald-800 leading-relaxed mt-0.5">${this.escapeHtml(q.explanation)}</p>
-              </div>
-            </div>
-            <div class="pt-1 flex justify-end">
-              <button onclick="window.antiGravityApp.switchTab('practice')" class="px-3.5 py-1.5 rounded-md bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs transition-colors flex items-center gap-1.5 shadow-xs">
-                <span>Start Practice Exercise</span>
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
-          </div>
-        `;
-      }
-      if (window.lucide) window.lucide.createIcons();
-
     } else {
       // INCORRECT!
       sounds.playErrorBuzz();
@@ -1338,6 +1480,7 @@ class AppController {
       if (isFirstTime) {
         this.state.completedLessons.push(lesson.id);
         this.state.totalXp += lesson.xp;
+        this.triggerXpGainAnimation(lesson.xp);
         if (!this.lastRunFailed) {
           this.state.flawlessRuns++;
         }
